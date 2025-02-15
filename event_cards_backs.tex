@@ -1,0 +1,21 @@
+\documentclass{standalone}
+\usepackage{roundtable}
+
+\begin{document}
+\begin{tikzpicture}[x=1in, y=1in, transform shape]
+\path (-105mm, -148.5mm) -- (105mm, 148.5mm);
+
+\pic at (-\horizdist,\vertdist) {diplomacycardprintable={kida}{white}}; 
+\pic at (0\horizdist,\vertdist) {diplomacycardprintable={marus}{white}};
+\pic at (\horizdist,\vertdist) {diplomacycardprintable={sorrell}{white}};
+
+\pic at (-\horizdist,0\vertdist) {diplomacycardprintable={kida}{white}}; 
+\pic at (0\horizdist,0\vertdist) {diplomacycardprintable={marus}{white}};
+\pic at (\horizdist,0\vertdist) {diplomacycardprintable={sorrell}{white}};
+
+\pic at (-\horizdist,-\vertdist) {diplomacycardprintable={kida}{white}}; 
+\pic at (0\horizdist,-\vertdist) {diplomacycardprintable={marus}{white}};
+\pic at (\horizdist,-\vertdist) {diplomacycardprintable={sorrell}{white}};
+
+\end{tikzpicture}
+\end{document}

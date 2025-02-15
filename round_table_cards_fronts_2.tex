@@ -1,0 +1,21 @@
+\documentclass{standalone}
+\usepackage{roundtable}
+
+\begin{document}
+\begin{tikzpicture}[x=1in, y=1in, transform shape]
+\path (-105mm, -148.5mm) -- (105mm, 148.5mm);
+
+\pic at (-\horizdist,\vertdist) {cardfrontprintable2={kida}{griffin}{silver}{Lancelot}}; 
+\pic at (0\horizdist,\vertdist) {cardfrontprintable2={marus}{griffin}{silver}{Mordred}};
+\pic at (\horizdist,\vertdist) {cardfrontprintable2={sorrell}{griffin}{silver}{Nichol}};
+
+\pic at (-\horizdist,0\vertdist) {cardfrontprintable2={kida}{horse}{silver}{Ozanna}};
+\pic at (0\horizdist,0\vertdist) {cardfrontprintable2={marus}{horse}{silver}{Percival}};
+\pic at (\horizdist,0\vertdist) {cardfrontprintable2={sorrell}{horse}{silver}{Quentin}};
+
+\pic at (-\horizdist,-\vertdist) {cardfrontprintable2={kida}{lion}{silver}{Robin}};
+\pic at (0\horizdist,-\vertdist) {cardfrontprintable2={marus}{lion}{silver}{Sadok}};
+\pic at (\horizdist,-\vertdist) {cardfrontprintable2={sorrell}{lion}{silver}{Tristan}};
+
+\end{tikzpicture}
+\end{document}

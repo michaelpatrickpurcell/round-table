@@ -1,0 +1,21 @@
+\documentclass{standalone}
+\usepackage{roundtable}
+
+\begin{document}
+\begin{tikzpicture}[x=1in, y=1in, transform shape]
+\path (-105mm, -148.5mm) -- (105mm, 148.5mm);
+
+\pic at (-\horizdist,\vertdist) {conflictcardprintable={dragon}{black}}; 
+\pic at (0\horizdist,\vertdist) {conflictcardprintable={dragon}{black}};
+\pic at (\horizdist,\vertdist) {conflictcardprintable={dragon}{black}};
+
+\pic at (-\horizdist,0\vertdist) {conflictcardprintable={seahorse}{black}}; 
+\pic at (0\horizdist,0\vertdist) {conflictcardprintable={seahorse}{black}};
+\pic at (\horizdist,0\vertdist) {conflictcardprintable={seahorse}{black}};
+
+\pic at (-\horizdist,-\vertdist) {conflictcardprintable={wolf}{black}}; 
+\pic at (0\horizdist,-\vertdist) {conflictcardprintable={wolf}{black}};
+\pic at (\horizdist,-\vertdist) {conflictcardprintable={wolf}{black}};
+
+\end{tikzpicture}
+\end{document}

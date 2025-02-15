@@ -1,0 +1,409 @@
+\usepackage[dvipsnames]{xcolor}
+\usepackage{tikz}
+
+\usepackage{fontspec}
+
+\usepackage{contour}
+\contournumber{256}
+\contourlength{0.1cm}
+
+\usepackage{calc}
+
+\usepackage{enumitem}
+\usepackage{setspace}
+
+% Define colors
+\definecolor{kidagold}{HTML}{FFD700}
+\definecolor{wolfblue}{HTML}{0038A8}
+\definecolor{eaglered}{HTML}{E32636}
+\definecolor{dragongreen}{HTML}{008000}
+\definecolor{hydrapurple}{HTML}{800080}
+\definecolor{paper}{HTML}{F1EBDB}
+\definecolor{stone}{HTML}{d9ebf3}
+\definecolor{silver}{HTML}{c0c0c0}
+\definecolor{gold}{HTML}{FFd700}
+
+
+\colorlet{Character}{Brown}
+\colorlet{Intrigue}{wolfblue}
+\colorlet{Ritual}{dragongreen}
+\colorlet{Arcana}{wolfblue}
+\colorlet{Country}{Orange}
+\colorlet{Ritual}{eaglered}
+\colorlet{Outcome}{dragongreen}
+\colorlet{Shrine}{white}%{hydrapurple}
+
+% Define the ribbon template
+\newlength\myrblen
+\newlength\myrbht
+\newlength\myrbarc
+\setlength\myrblen{1.33cm}
+\setlength\myrbht{1.75cm}
+\setlength\myrbarc{0.1cm}
+
+\tikzset{ribbon/.pic={%
+\path
+  (-4.5\myrblen,0) --
+  ++(3\myrblen,0) to[out=0,in=0,looseness=3] coordinate[midway] (aux1)
+  ++(0,-\myrbarc) --
+  ++(-\myrblen,0) to[out=180,in=180,looseness=3] coordinate[midway] (aux2)
+  ++(0,- \myrbarc) --
+  ++(5\myrblen,0) to[out=0,in=0,looseness=3] coordinate[midway] (aux3)
+  ++(0, \myrbarc) --
+  ++(-\myrblen,0) to[out=180,in=180,looseness=3] coordinate[midway] (aux4)
+  ++(0, \myrbarc) --
+  ++(3\myrblen,0) --
+  ++(-0.5\myrbht,-0.5\myrbht) --
+  ++(0.5\myrbht,-0.5\myrbht) --
+  ++(-9\myrblen,0) --
+  ++(0.5\myrbht,0.5\myrbht) --
+  ++(-0.5\myrbht,0.5\myrbht) --
+    cycle;
+\draw[thick, fill=paper!75!black]
+  (aux1) -- ++(0,-0.5\myrbht) coordinate (aux7) -- (aux2|-aux7) -- (aux2|-aux1) -- cycle;  
+\draw[thick, fill=paper!75!black]
+  (aux4) -- ++(0,-0.5\myrbht) coordinate (aux8) -- (aux3|-aux8) -- (aux3|-aux4) -- cycle;  
+\draw[thick,fill=paper]
+  (-4.5\myrblen,0) --
+  ++(3\myrblen,0) to[out=0,in=0,looseness=3] coordinate[midway] (aux1)
+  ++(0,-\myrbarc) --
+  ++(-\myrblen,0) to[out=180,in=180,looseness=3] coordinate[midway] (aux2)
+  ++(0,-\myrbarc) --
+  ++(5\myrblen,0) to[out=0,in=0,looseness=3] coordinate[midway] (aux3)
+  ++(0, \myrbarc) --
+  ++(-\myrblen,0) to[out=180,in=180,looseness=3] coordinate[midway] (aux4)
+  ++(0, \myrbarc) --
+  ++(3\myrblen,0) --
+  ++(-0.5\myrbht,-0.5\myrbht) --
+  ++(0.5\myrbht,-0.5\myrbht) --
+  ++(-9\myrblen,0) --
+  ++(0.5\myrbht,0.5\myrbht) --
+  ++(-0.5\myrbht,0.5\myrbht) --
+   cycle;
+\path
+  (aux2) {[rounded corners=1.5pt] -- 
+  ++(0,\dimexpr-\myrbht-1.5\myrbarc\relax) coordinate (aux5) -- 
+  (aux3|-aux5)} -- 
+  (aux3);
+\fill[paper]
+  ([yshift=-\myrbarc]aux2) {[rounded corners=1.5pt] -- 
+  ++(0,\dimexpr-\myrbht-0.5\myrbarc\relax) -- 
+  (aux3|-aux5)} -- 
+  ([yshift=-\myrbarc]aux3);
+\draw[thick]
+  (aux2) {[rounded corners=1.5pt] -- 
+  ++(0,\dimexpr-\myrbht-1.5\myrbarc\relax) coordinate (aux5) --  
+  (aux3|-aux5)} -- 
+  (aux3);
+  
+\node[inner sep=0pt] () at (0, -2.5\myrbarc - 0.5\myrbht) {\setmainfont[Scale=2.0]{QT Chancery Type}\huge #1};
+}}
+
+
+% Define the card templates
+\newlength{\cardwidth}
+\newlength{\cardheight}
+\newlength{\bleed}
+\newlength{\horizspace}
+\newlength{\vertspace}
+\newlength{\vertdist}
+\newlength{\horizdist}
+
+\setlength{\cardwidth}{2.5in}
+\setlength{\cardheight}{3.5in}
+\setlength{\bleed}{0.0625in}
+\setlength{\horizspace}{0.0625in}
+\setlength{\horizdist}{\cardwidth + 2\bleed + \horizspace}
+\setlength{\vertspace}{0.0625in}
+\setlength{\vertdist}{\cardheight + 2\bleed + \vertspace}
+
+\tikzset{guidecross/.pic={
+	\draw[#1] (-\bleed,0) -- (\bleed,0);
+	\draw[#1] (0, -\bleed) -- (0, \bleed);
+}}
+
+\tikzset{cutguide/.pic={
+	\pic () at (-\cardwidth/2, \cardheight/2) {guidecross={#1}};
+	\pic () at (\cardwidth/2, \cardheight/2) {guidecross={#1}};
+	\pic () at (-\cardwidth/2, -\cardheight/2) {guidecross={#1}};
+	\pic () at (\cardwidth/2, -\cardheight/2) {guidecross={#1}};
+}}
+
+
+\tikzset{cardbackpattern/.pic={
+	\foreach \i in {-1.25in, -1.0in, -0.75in, -0.5in, -0.25in, 0in, 0.25in, 0.5in, 0.75in, 1.0in, 1.25in}
+		\foreach \j in {-1.75in, -1.5in, -1.25in, -1.0in, -0.75in, -0.5in, -0.25in, 0in, 0.25in, 0.5in, 0.75in, 1.0in, 1.25in, 1.5in, 1.75in}
+			\draw[very thick, #1] (\i,\j) circle (0.105in);
+
+	\foreach \i in {-1.375in, -1.125in, -0.875in, -0.625in, -0.375in, -0.125in, 0.125in, 0.375in, 0.625in, 0.875in, 1.125in, 1.375in}
+		\foreach \j in {-1.875in, -1.625in, -1.375in, -1.125in, -0.875in, -0.625in, -0.375in, -0.125in, 0.125in, 0.375in, 0.625in, 0.875in, 1.125in, 1.375in, 1.625in, 1.875in}
+			\draw[very thick, #1] (\i,\j) circle (0.105in);
+}}
+
+
+\tikzset{wolf/.pic={
+	\node[xscale=-1] () at (0,0) {\includegraphics[scale=1.33]{Images/wolf_gray.png}};
+}}
+
+\tikzset{dragon/.pic={
+	\node () at (0,0) {\includegraphics[scale=1.5]{Images/dragon.png}};
+}}
+
+\tikzset{seahorse/.pic={
+	\node () at (0,0) {\includegraphics[scale=2.9]{Images/seahorse_brown.png}};
+
+}}
+
+\tikzset{lion/.pic={
+	\node () at (0,0) {\includegraphics[scale=0.031]{Images/lion.png}};
+
+}}
+
+\tikzset{horse/.pic={
+	\node () at (0,0) {\includegraphics[scale=0.031]{Images/horse.png}};
+
+}}
+
+\tikzset{griffin/.pic={
+	\node () at (0,0) {\includegraphics[scale=0.035]{Images/griffin.png}};
+
+}}
+
+\tikzset{gold_crown/.pic={
+	\node () at (0,0) {\includegraphics[height=1.0cm]{Images/gold_crown.png}};
+}}
+
+\tikzset{pics/silver_crown/.style n args={2}{
+code={
+	\node[xscale=-1] () at (0,-0.075cm) {\includegraphics[height=1.4cm]{Images/silver_helmet_and_mantling.png}};
+}
+}}
+
+\tikzset{pics/helmet_with_mantling/.style n args={2}{
+code={
+%	\node[xscale=-1] () at (0,-0.075cm) {\includegraphics[height=1.4cm]{Images/silver_helmet_and_mantling.png}};
+	\node () at (0,0.1cm) {\includegraphics[height=2cm]{Images/#1_#2_helmet.png}};
+	\node at (0, -0.3cm) {\includegraphics[height=2.1cm]{Images/#2_helmet.png}};
+
+}
+}}
+
+% Stuff for character cards
+\tikzset{shield/.pic={
+%	\begin{scope}
+%	\clip (0,0cm) -- (0,3cm) -- (9cm,3cm) -- (9cm,0cm) arc (0:-60:9cm) arc (240:180:9cm);
+%	
+%	\node[opacity=1] at (4.5cm,-1.75cm) {\includegraphics[scale=0.33]{Images/wood_texture.png}};	
+%
+%	\end{scope}
+
+
+	\draw[ultra thick] (0, 0cm) -- (0, 3cm) -- (9cm, 3cm) -- (9cm, 0cm) arc (0:-60:9cm) arc (240:180:9cm);
+%	\draw[line width=0.75mm, silver] (0, 0cm) -- (0, 3cm) -- (9cm, 3cm) -- (9cm, 0cm) arc (0:-60:9cm) arc (240:180:9cm);
+}}
+
+\tikzset{sorrell/.pic={
+	\begin{scope}
+	\clip (0,0cm) -- (0,3cm) -- (9cm,3cm) -- (9cm,0cm) arc (0:-60:9cm) arc (240:180:9cm);
+	
+	\draw[thick, fill=eaglered] (0, -2cm) -- (4.5cm, -2cm) -- (4.5cm, 3cm) -- (0, 3cm) -- cycle;
+	\draw[thick, fill=white] (9cm, -2cm) -- (4.5cm,-2cm) -- (4.5cm, 3cm) -- (9cm,3cm) -- cycle;
+	\draw[thick, fill=white] (0,-2cm) -- (4.5cm, -2cm) -- (4.5cm, -9) -- (0,-9cm) -- cycle;
+	\draw[thick, fill=eaglered] (9cm, -2cm) -- (4.5cm, -2cm) -- (4.5cm, -9cm) -- (9cm,-9cm) -- cycle;
+
+\end{scope}
+}}
+
+\tikzset{marus/.pic={
+\begin{scope}
+	\clip (0,0cm) -- (0,3cm) -- (9cm,3cm) -- (9cm,0cm) arc (0:-60:9cm) arc (240:180:9cm);
+
+	\fill[wolfblue] (0,0cm) -- (0,3cm) -- (9cm,3cm) -- (9cm,0cm) arc (0:-60:9cm) arc (240:180:9cm);
+	\draw[thick, fill=White] (0, 1cm) -- (0, 3cm) -- (2cm, 3cm) -- (14cm, -9cm) -- (14cm, -11cm) -- (12cm, -11cm) -- cycle;
+
+\end{scope}
+}}
+
+\tikzset{kida/.pic={
+\begin{scope}
+	\clip (0,0cm) -- (0,3cm) -- (9cm,3cm) -- (9cm,0cm) arc (0:-60:9cm) arc (240:180:9cm);
+	
+	\fill[dragongreen] (0,0cm) -- (0,3cm) -- (9cm,3cm) -- (9cm,0cm) arc (0:-60:9cm) arc (240:180:9cm);
+	\draw[thick, fill=white] (2cm, 3cm) -- (7cm, 3cm) -- (4.5cm, -8cm) -- cycle;
+
+\end{scope}
+}}
+
+
+\tikzset{pics/coaribbon/.style n args={2}{
+	code={
+	\pic () at (4.5cm,-0.0cm) {ribbon={#2}};
+	\pic () at (0,8cm) {#1};
+	\pic () at (0,8cm) {shield};
+}}}
+
+
+\tikzset{pics/coa/.style n args={2}{
+code={
+	\pic () at (0,7cm) {#1};
+	\pic () at (0,7cm) {shield={#2}};
+}}}
+
+% Composite pictures for character cards
+\tikzset{dragon_supporters/.pic={
+	\pic[scale=0.66, xshift=-3.6cm, yshift=0.4cm] () at (0,0) {dragon};
+	\pic[xscale=-1, scale=0.66, xshift=-3.6cm, yshift=0.4cm] () at (0,0) {dragon}; 
+}}
+
+\tikzset{wolf_supporters/.pic={
+	\pic[scale=0.66, xshift=-3.3cm] () at (0, 0) {wolf};
+	\pic[xscale=-1, scale=0.66, xshift=-3.3cm] () at (0, 0) {wolf}; 
+}}
+
+\tikzset{seahorse_supporters/.pic={
+	\pic[scale=0.66, xshift=-3.5cm] () at (0, 0.1in) {seahorse};
+	\pic[xscale=-1, scale=0.66, xshift=-3.5cm] () at (0, 0.1in) {seahorse}; 
+}}
+
+\tikzset{lion_supporters/.pic={
+	\pic[scale=0.66, xshift=-3.5cm] () at (0, 0.05in) {lion};
+	\pic[xscale=-1, scale=0.66, xshift=-3.5cm] () at (0, 0.05in) {lion}; 
+}}
+
+\tikzset{horse_supporters/.pic={
+	\pic[scale=0.66, xshift=-3.2cm] () at (0, 0.05in) {horse};
+	\pic[xscale=-1, scale=0.66, xshift=-3.2cm] () at (0, 0.05in) {horse}; 
+}}
+
+\tikzset{griffin_supporters/.pic={
+	\pic[scale=0.66, xshift=-3.7cm] () at (0cm, 0.15in) {griffin};
+	\pic[xscale=-1, scale=0.66, xshift=-3.7cm] () at (0cm, 0.15in) {griffin}; 
+}}
+
+\tikzset{cardbackprintable/.pic={
+	\begin{scope}
+	\clip (-\cardwidth/2 - \bleed, 0in) --%
+	      (-\cardwidth/2 - \bleed, \cardheight/2 + \bleed) --%
+	      (\cardwidth/2 + \bleed, \cardheight/2 + \bleed) --%
+	      (\cardwidth/2 + \bleed, -\cardheight/2 - \bleed) --%
+	      (-\cardwidth/2 - \bleed, -\cardheight/2 - \bleed) --%
+	      cycle;
+	
+	\node[rotate=90] at (0,0) {\includegraphics[width=3.75in, height=2.75in]{Images/table_top.jpg}};	
+%	\node[draw, minimum width=2.5in, minimum height=3.5in, rounded corners=3mm] at (0,0) {};
+	
+	\end{scope}
+}}
+
+
+\tikzset{cardbackprintable2/.pic={
+	\begin{scope}
+	\clip (-\cardwidth/2 - \bleed, 0in) --%
+	      (-\cardwidth/2 - \bleed, \cardheight/2 + \bleed) --%
+	      (\cardwidth/2 + \bleed, \cardheight/2 + \bleed) --%
+	      (\cardwidth/2 + \bleed, -\cardheight/2 - \bleed) --%
+	      (-\cardwidth/2 - \bleed, -\cardheight/2 - \bleed) --%
+	      cycle;
+	% Pattern for card back
+	\path[fill=#1] (-\cardwidth/2 - \bleed, 0in) --%
+	      (-\cardwidth/2 - \bleed, \cardheight/2 + \bleed) --%
+	      (\cardwidth/2 + \bleed, \cardheight/2 + \bleed) --%
+	      (\cardwidth/2 + \bleed, -\cardheight/2 - \bleed) --%
+	      (-\cardwidth/2 - \bleed, -\cardheight/2 - \bleed) --%
+	      cycle;
+	\pic () at (0,0) {cardbackpattern={black}};
+	\end{scope}
+}}
+
+
+\tikzset{pics/cardfrontprintable2/.style n args={4}{
+	code={
+	\begin{scope}
+	\clip (-\cardwidth/2 - \bleed, 0in) --%
+	      (-\cardwidth/2 - \bleed, \cardheight/2 + \bleed) --%
+	      (\cardwidth/2 + \bleed, \cardheight/2 + \bleed) --%
+	      (\cardwidth/2 + \bleed, -\cardheight/2 - \bleed) --%
+	      (-\cardwidth/2 - \bleed, -\cardheight/2 - \bleed) --%
+	      cycle;
+	      
+	\node[rotate=90] at (0,0) {\includegraphics[width=3.75in, height=2.75in]{Images/blue_stone_wall_vector}};
+
+%	\node[rotate=95] at (-0.85in, -0.75in) {\includegraphics[width=1.25in]{Images/#1_filagree.png}}; 
+%	\node[rotate=85, xscale=-1] at (-0.85in, 0.75in) {\includegraphics[width=1.25in]{Images/#1_filagree.png}}; 
+%
+	
+	\pic[rotate=90, xscale=0.3, yscale=0.30, xshift=-4.5cm, yshift=-4.8cm] () at (0.35in,0) {coa={#1}{#3}};
+	\pic[rotate=90] () at (-0.69in, 0) {helmet_with_mantling={#1}{#3}};
+%	\node[rotate=90, transform shape] at (-0.585in, 0) {\includegraphics[height=2.1cm]{Images/silver_helmet.png}};
+	\pic[rotate=90] () at (0.45in,0) {#2_supporters};
+
+	\pic () at (0,0) {cutguide={black}};
+	
+%	\node[draw, minimum width=2.5in, minimum height=3.5in, rounded corners=3mm] at (0,0) {};
+
+\end{scope}
+}}}
+
+
+\tikzset{pics/conflictcardprintable/.style n args={2}{
+	code={
+	\begin{scope}
+	\clip (-\cardwidth/2 - \bleed, 0in) --%
+	      (-\cardwidth/2 - \bleed, \cardheight/2 + \bleed) --%
+	      (\cardwidth/2 + \bleed, \cardheight/2 + \bleed) --%
+	      (\cardwidth/2 + \bleed, -\cardheight/2 - \bleed) --%
+	      (-\cardwidth/2 - \bleed, -\cardheight/2 - \bleed) --%
+	      cycle;
+	      
+%	\node[rotate=90] at (0,0) {\includegraphics[width=3.75in, height=2.75in]{Images/blue_stone_wall_vector}};
+	\pic at (0,0) {#1};	
+	\pic () at (0,0) {cutguide={#2}};
+%	\node[draw, minimum width=2.5in, minimum height=3.5in, rounded corners=3mm] at (0,0) {};
+
+\end{scope}
+}}}
+
+
+\tikzset{pics/diplomacycardprintable/.style n args={2}{
+	code={
+	\begin{scope}
+	\clip (-\cardwidth/2 - \bleed, 0in) --%
+	      (-\cardwidth/2 - \bleed, \cardheight/2 + \bleed) --%
+	      (\cardwidth/2 + \bleed, \cardheight/2 + \bleed) --%
+	      (\cardwidth/2 + \bleed, -\cardheight/2 - \bleed) --%
+	      (-\cardwidth/2 - \bleed, -\cardheight/2 - \bleed) --%
+	      cycle;
+	      
+%	\node[rotate=90] at (0,0) {\includegraphics[width=3.75in, height=2.75in]{Images/blue_stone_wall_vector}};
+	\pic[scale=0.5, xshift=-4.5cm, yshift=-4.8cm] at (0,0) {coa={#1}};	
+	\pic () at (0,0) {cutguide={#2}};
+%	\node[draw, minimum width=2.5in, minimum height=3.5in, rounded corners=3mm] at (0,0) {};
+
+\end{scope}
+}}}
+
+
+\tikzset{pics/effort_token/.style n args={2}{
+	code={
+	\setmainfont[Scale=3.75]{Tex Gyre Heros-Bold}
+	\node[circle, minimum width=1.5in, draw, black, line width=0.025in, inner sep=0, fill=#1] at (0,0) {\huge \contour{black}{\textcolor{white}{#2}}};
+}}}
+
+\tikzset{playerscreenfront/.pic={
+\begin{scope}
+	\clip (0, 1.5in) -- (3.75in, 1.5in) -- (3.75in, -1.5in) -- (-3.75in, -1.5in) -- (-3.75in, 1.5in) -- cycle;
+	\node[inner sep=0pt] at (0,0) {\includegraphics[width=7.5in]{Images/blue_stone_wall_vector.png}};
+	\end{scope}
+}}
+
+\tikzset{playerscreenback/.pic={
+\begin{scope}
+	\clip (0, 1.5in) -- (3.75in, 1.5in) -- (3.75in, -1.5in) -- (-3.75in, -1.5in) -- (-3.75in, 1.5in) -- cycle;
+\node[inner sep=0pt, xscale=-1] at (0,0) {\includegraphics[width=7.5in]{Images/blue_stone_wall_vector.png}};
+\draw[dotted, thick] (-1.75in, 1.25in) -- (-1.75in, -1.25in);
+\draw[dotted, thick] (1.75in, 1.25in) -- (1.75in, -1.25in);
+\end{scope}
+
+\draw[thick] (-3.5in, 1.25in) -- (3.5in, 1.25in) -- (3.5in, -1.125in) -- (1.75in, -1.25in) -- (-1.75in, -1.25in) -- (-3.5in, -1.125in) -- cycle;
+
+}}

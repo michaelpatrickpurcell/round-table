@@ -1,0 +1,21 @@
+\documentclass{standalone}
+\usepackage{roundtable}
+
+\begin{document}
+\begin{tikzpicture}[x=1in, y=1in, transform shape]
+\path (-105mm, -148.5mm) -- (105mm, 148.5mm);
+
+\pic[rotate=180] at (-\horizdist,\vertdist) {cardbackprintable2={white}}; 
+\pic[rotate=180] at (0\horizdist,\vertdist) {cardbackprintable2={white}}; 
+\pic[rotate=180] at (\horizdist,\vertdist) {cardbackprintable2={white}}; 
+
+\pic[rotate=180] at (-\horizdist,0\vertdist) {cardbackprintable2={white}}; 
+\pic[rotate=180] at (0\horizdist,0\vertdist) {cardbackprintable2={white}}; 
+\pic[rotate=180] at (\horizdist,0\vertdist) {cardbackprintable2={white}}; 
+
+\pic[rotate=180] at (-\horizdist,-\vertdist) {cardbackprintable2={white}}; 
+\pic[rotate=180] at (0\horizdist,-\vertdist) {cardbackprintable2={white}}; 
+\pic[rotate=180] at (\horizdist,-\vertdist) {cardbackprintable2={white}}; 
+
+\end{tikzpicture}
+\end{document}
